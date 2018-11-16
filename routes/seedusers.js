@@ -13,9 +13,9 @@ router.get('/', function(req, res) {
 	var log = prenom+nom;
 	var sexe = (Math.random()>.5?"Homme":"Femme");
 	var tags = {
-		t1: (Math.random()>.5?"Artiste":(Math.random()>.5?"Bosseu(r)(se)":(Math.random()>.5?"Dormeu(r)(se)":"Esquimau"))),
-		t2: (Math.random()>.5?"Fétârd(e)":(Math.random()>.5?"Geek(ette)":(Math.random()>.5?"Manouche":"Musicien(ne)"))),
-		t3: (Math.random()>.5?"Ninja":(Math.random()>.5?"Routier(e)":(Math.random()>.5?"Sporti(f)(ve)":"Voyageu(r)(se)")))
+		t1: (Math.random()>.5?"Alice":(Math.random()>.5?"Chapelier fou":(Math.random()>.5?"Chat du Cheshire":"La Chenille"))),
+		t2: (Math.random()>.5?"Humpty Dumpty":(Math.random()>.5?"Dodo":(Math.random()>.5?"Lapin blanc":"Lièvre de Mars"))),
+		t3: (Math.random()>.5?"Reine de coeur":(Math.random()>.5?"Tweedledum":(Math.random()>.5?"Tweedledee":"Le Temps")))
 	}
 	var newUser = {
 		login: log,
