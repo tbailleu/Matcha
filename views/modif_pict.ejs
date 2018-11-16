@@ -1,0 +1,83 @@
+<% include includes/head.ejs %>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <img id="logo" src="/img/logo.png">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Matcha</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/home">Accueil</a></li>
+                <li><a href="/profile">Profil</a></li>
+                <li><a href="/connect">Connections</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/notif"><span class="glyphicon glyphicon-exclamation-sign mdp" id="to_read"></span> Notifications</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-off mdp"></span> Déconnexion</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="jumbotron back">
+                <img src="<%= pict.p1%>" class="prof_pict">
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="hidden" name="p" value="1">
+                        <input type="hidden" name="old" value="<%= pict.p1%>">
+                        <input type="file" name="img">
+                        <button type="submit" class="btn btn-default btn-xs">Ok</button>
+                    </div>
+                </form>
+                <img src="<%= pict.p2%>" class="prof_pict">
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="hidden" name="p" value="2">
+                        <input type="hidden" name="old" value="<%= pict.p2%>">
+                        <input type="file" name="img">
+                        <button type="submit" class="btn btn-default btn-xs">Ok</button>
+                    </div>
+                </form>
+                <img src="<%= pict.p3%>" class="prof_pict">
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="hidden" name="p" value="3">
+                        <input type="hidden" name="old" value="<%= pict.p3%>">
+                        <input type="file" name="img">
+                        <button type="submit" class="btn btn-default btn-xs">Ok</button>
+                    </div>
+                </form>
+                <img src="<%= pict.p4%>" class="prof_pict">
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="hidden" name="p" value="4">
+                        <input type="hidden" name="old" value="<%= pict.p4%>">
+                        <input type="file" name="img">
+                        <button type="submit" class="btn btn-default btn-xs">Ok</button>
+                    </div>
+                </form>
+                <img src="<%= pict.p5%>" class="prof_pict">
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="hidden" name="p" value="5">
+                        <input type="hidden" name="old" value="<%= pict.p5%>">
+                        <input type="file" name="img">
+                        <button type="submit" class="btn btn-default btn-xs">Ok</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<% include includes/footer.ejs %>

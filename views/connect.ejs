@@ -1,0 +1,64 @@
+<% include includes/head.ejs %>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <img id="logo" src="/img/logo.png">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/home">Matcha</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/home">Accueil</a></li>
+                <li><a href="/profile">Profil</a></li>
+                <li class="active"><a href="/connect">Connections</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/notif"><span class="glyphicon glyphicon-exclamation-sign mdp" id="to_read"></span>
+                        Notifications</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-off mdp"></span> Déconnexion</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<center>
+    <p class="h2 w">Connections</p>
+    <% if (!matchs.length) { %>
+    <p><em>Vous n'avez actuellement aucune connection...</em></p>
+    <% } %>
+    <% for (var i = 0; i < matchs.length; i++) { %>
+    <div class="connect">
+        <p><em><%= matchs[i] %></em></p>
+        <p><a href="/profile/<%= matchs[i] %>" class="mdp">Accéder à son profil</a></p>
+        <p><a href="/connect/<%= matchs[i] %>" class="mdp">Engager la conversation</a></p>
+    </div>
+    <% } %>
+    <p class="h2 w">Vos coups de coeur</p>
+    <% if (!liked.length) { %>
+    <p><em>Vous n'avez pas de coup de coeur...</em></p>
+    <% } %>
+    <% for (var i = 0; i < liked.length; i++) { %>
+    <div class="other">
+        <p><em><%= liked[i] %></em></p>
+        <p><a href="/profile/<%= liked[i] %>" class="mdp">Accéder à son profil</a></p>
+    </div>
+    <% } %>
+    <p class="h2 w">Ils/elles ont flashés sur vous</p>
+    <% if (!tolike.length) { %>
+    <p><em>Personne n'a flashé sur vous...</em></p>
+    <% } %>
+    <% for (var i = 0; i < tolike.length; i++) { %>
+    <div class="other">
+        <p><em><%= tolike[i] %></em></p>
+        <p><a href="/profile/<%= tolike[i] %>" class="mdp">Accéder à son profil</a></p>
+    </div>
+    <% } %>
+</center>
+
+
+<% include includes/footer.ejs %>

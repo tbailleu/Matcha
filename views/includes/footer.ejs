@@ -1,0 +1,50 @@
+<script>
+    if (!socket) {
+        var socket = io.connect();
+
+        socket.on('notif_msg', function(data) {
+            var result = document.cookie;
+            var cookieArray = result.split("+");
+            document.cookie = cookieArray[0] + "+1";
+            add_not(data);
+        });
+    }
+
+    if (document.cookie) {
+        var result = document.cookie;
+        var cookieArray = result.split("+");
+        var token = cookieArray[0];
+        socket.emit('login', token);
+        var notif = cookieArray[1];
+        check_not(notif);
+    }
+
+    socket.on('send_notif', function(data) {
+        var result = document.cookie;
+        var cookieArray = result.split("+");
+        document.cookie = cookieArray[0] + "+1";
+        add_not(data);
+    });
+
+    function check_not(notif) {
+        var to_read = document.getElementById("to_read");
+        if (notif != "1" && to_read) {
+            to_read.setAttribute("class", "not");
+        }
+    }
+
+    function add_not(data) {
+        var to_read = document.getElementById("to_read");
+        if (to_read) {
+            to_read.removeAttribute("class");
+            to_read.setAttribute("class", "glyphicon glyphicon-exclamation-sign mdp");
+        }
+        //Materialize.toast(data , 4000);
+        var not = document.getElementById("snackbar");
+        not.innerHTML = '<b>' + data + '</b>';
+        not.className = "show";
+        setTimeout(function(){ not.className = not.className.replace("show", ""); }, 5000);
+    }
+</script>
+</body>
+</html>

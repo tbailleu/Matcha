@@ -1,0 +1,112 @@
+<% include includes/head.ejs %>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <img id="logo" src="/img/logo.png">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/home">Matcha</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/home">Accueil</a></li>
+                <li><a href="/profile">Profil</a></li>
+                <li><a href="/connect">Connections</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/notif"><span class="glyphicon glyphicon-exclamation-sign mdp" id="to_read"></span> Notifications</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-off mdp"></span> Déconnexion</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading panel-modif">
+                    <span class="glyphicon glyphicon-comment"></span> Conversation avec <%= to%>
+                </div>
+                <div class="panel-body">
+                    <ul class="chat" id="conv">
+                        <% if (conv != "") { %>
+                        <% for (var i = 0; i < conv.length; i++) { %>
+                        <% if (conv[i].from != from) { %>
+                            <li class="left clearfix">
+                                <div class="chat clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font"><%= conv[i].from%></strong>
+                                        <small class="pull-right invisible">-</small>
+                                    </div>
+                                    <p><%= conv[i].msg%></p>
+                                </div>
+                            </li>
+                        <% } %>
+                        <% if (conv[i].from == from) { %>
+                            <li class="right clearfix">
+                                <div class="chat clearfix">
+                                    <div class="header">
+                                        <small class="invisible">-</small>
+                                        <strong class="pull-right primary-font"><%= conv[i].from%></strong>
+                                    </div>
+                                    <p class="pull-right"><%= conv[i].msg%></p>
+                                </div>
+                            </li>
+                        <% } %>
+                        <% } %>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <form method="get" id="form" onsubmit="return send_msg()" class="input-group">
+                        <input name="message" id="message" type="text" class="form-control input-sm" placeholder="Ecrivez votre message ici..." />
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-danger btn-sm" id="btn-chat">Envoyer</button>
+                        </span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var socket = io.connect();
+
+    socket.on('put_message', function(data) {
+        putmsg(data.from, data.message);
+    });
+
+    function send_msg() {
+        var result = document.cookie;
+        var cookieArray = result.split("+");
+        var token = cookieArray[0];
+        var message = document.getElementById("message").value;
+        socket.emit('notif_msg', {token: token, login: '<%= to%>'});
+        socket.emit('message', {token: token, to: '<%= to%>', message: message});
+        putmsg('<%= from%>', message);
+        document.getElementById("message").value = "";
+        document.getElementById("message").focus();
+
+        return false;
+    }
+
+    function putmsg(pseudo, message) {
+        var conv = document.getElementById("conv");
+        if (pseudo != '<%= from%>') {
+            conv.innerHTML += '<li class="left clearfix"><div class="chat clearfix"><div class="header"><strong class="primary-font">' + pseudo + '</strong><small class="pull-right invisible">-</small></div><p>' + message + '</p></div></li>';
+        }
+        else {
+            conv.innerHTML += '<li class="right clearfix"><div class="chat clearfix"><div class="header"><small class="invisible">-</small><strong class="pull-right primary-font">' + pseudo + '</strong></div><p class="pull-right">' + message + '</p></div></li>'
+        }
+    }
+</script>
+
+<% include includes/footer.ejs %>

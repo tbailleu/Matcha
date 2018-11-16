@@ -1,0 +1,51 @@
+<% include includes/head.ejs %>
+<script>
+    var result = document.cookie;
+    var cookieArray = result.split("+");
+    document.cookie = cookieArray[0] + "+0";
+</script>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <img id="logo" src="/img/logo.png">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/home">Matcha</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/home">Accueil</a></li>
+                <li><a href="/profile">Profil</a></li>
+                <li><a href="/connect">Connections</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/notif">Notifications</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-off mdp"></span> Déconnexion</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<center>
+    <% if (info != "") { %>
+    <p><%= info %></p>
+    <% } %>
+    <% if (info == "") { %>
+    <% for (var i = 0; i < notif.length; i++) { %>
+    <div class="other">
+        <p><%= notif[i].notif %></p>
+        <% if (notif[i].notif == notif[i].from + ' vous a envoyé un message') { %>
+        <p><a href="/connect/<%= notif[i].from %>">Accéder à la conversation</a></p>
+        <% } %>
+        <% if (notif[i].notif != notif[i].from + ' vous a envoyé un message') { %>
+        <p><a href="/profile/<%= notif[i].from %>">Accéder à son profil</a></p>
+        <% } %>
+    </div>
+    <% } %>
+    <% } %>
+</center>
+<% include includes/footer.ejs %>

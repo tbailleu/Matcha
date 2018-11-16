@@ -1,0 +1,166 @@
+<% include includes/head.ejs %>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <img id="logo" src="/img/logo.png">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/home">Matcha</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/home">Accueil</a></li>
+                <li><a href="/profile">Profil</a></li>
+                <li><a href="/connect">Connections</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/notif"><span class="glyphicon glyphicon-exclamation-sign mdp" id="to_read"></span>
+                        Notifications</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-off mdp"></span> Déconnexion</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<center>
+    <p>
+        <%= res.login %>
+        <% if (res.co == "1") { %>
+        - <font color="green">En ligne</font>
+        <% } %>
+        <% if (res.co != "1") { %>
+        - <font color="#FF0040">Hors ligne</font>
+        <% } %>
+    </p>
+    <% if (res.co != "1") { %>
+    <p>Dernière connexion le <%= res.co %></p>
+    <% } %>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <% if (res.p2 != "uploads/miss.png") { %>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <% } %>
+            <% if (res.p3 != "uploads/miss.png") { %>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <% } %>
+            <% if (res.p4 != "uploads/miss.png") { %>
+            <li data-target="#myCarousel" data-slide-to="3"></li>
+            <% } %>
+            <% if (res.p5 != "uploads/miss.png") { %>
+            <li data-target="#myCarousel" data-slide-to="4"></li>
+            <% } %>
+        </ol>
+
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="/<%= res.prof_pict %>" class="prof_pict">
+            </div>
+            <% if (res.p2 != "uploads/miss.png") { %>
+            <div class="item">
+                <img src="/<%= res.p2 %>" class="prof_pict">
+            </div>
+            <% } %>
+            <% if (res.p3 != "uploads/miss.png") { %>
+            <div class="item">
+                <img src="/<%= res.p3 %>" class="prof_pict">
+            </div>
+            <% } %>
+            <% if (res.p4 != "uploads/miss.png") { %>
+            <div class="item">
+                <img src="/<%= res.p4 %>" class="prof_pict">
+            </div>
+            <% } %>
+            <% if (res.p5 != "uploads/miss.png") { %>
+            <div class="item">
+                <img src="/<%= res.p5 %>" class="prof_pict">
+            </div>
+            <% } %>
+        </div>
+
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <br/>
+    <p>Nom : <%= res.nom %></p>
+    <p>Prénom : <%= res.prenom %></p>
+    <p>Age : <%= age %></p>
+    <p>Ville : <%= city %></p>
+    <p>Sexe : <%= res.sexe %></p>
+    <p>Cherche : <%= res.pref %></p>
+    <p>Description : <%= res.bio %></p>
+    <p>Styles : <font color="#FF0040">#</font><%= res.tags.t1 %> - <font color="#FF0040">#</font><%= res.tags.t2 %> -
+        <font color="#FF0040">#</font><%= res.tags.t3 %></p>
+    <div class="other padd_bot">
+        <p>Côte de popularité : <font color="#FF0040"><%= res.pop %></font> points</p>
+    </div>
+    <br/>
+    <% if (love == "2") { %>
+    <p><%= res.login%> vous like !</p>
+    <br/>
+    <% } %>
+    <% if (love == "3") { %>
+    <p><%= res.login%> et vous êtes connectés</p>
+    <p><a href="/connect/<%= res.login%>">Envoyez lui un message !</a></p>
+    <% } %>
+    <div class="other padd_bot">
+        <% if (love == "0" || love == "2") { %>
+        <a href="#"><img src="/img/broken.png" class="hearth" onclick="like(socket)"></a>
+        <% } %>
+        <% if (love == "1" || love == "3") { %>
+        <a href="#"><img src="/img/coeur.png" class="hearth" onclick="dislike(socket)"></a>
+        <% } %>
+    </div>
+    <br/>
+    <a href="/bloc/<%= res.login%>">Bloquer cet utilisateur</a>
+    <br/>
+    <a href="/report/<%= res.login%>">Signaler cet utilisateur</a>
+    <br/><br/>
+</center>
+
+<script>
+    var socket = io.connect();
+
+    socket.emit('visit', '<%= res.login %>');
+
+    function like(socket) {
+        socket.emit('like', '<%= res.login %>');
+
+        var form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/like';
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'liked_log';
+        input.value = '<%= res.login %>';
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    }
+    function dislike(socket) {
+        socket.emit('dislike', '<%= res.login %>');
+
+        var form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/dislike';
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'liked_log';
+        input.value = '<%= res.login %>';
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+<% include includes/footer.ejs %>

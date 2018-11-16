@@ -1,0 +1,197 @@
+<% include includes/head.ejs %>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="jumbotron back">
+                <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <img id="logo" src="/img/logo.png">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                    data-target="#navbar"
+                                    aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="/">Matcha</a>
+                        </div>
+                        <div id="navbar" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="/home">Accueil</a></li>
+                                <li><a href="/profile">Profil</a></li>
+                                <li><a href="/connect">Connections</a></li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="/notif"><span class="glyphicon glyphicon-exclamation-sign mdp" id="to_read"></span> Notifications</a></li>
+                                <li><a href="/logout"><span class="glyphicon glyphicon-off mdp"></span> Déconnexion</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <% if (error) { %>
+                <div class="alert alert-warning">
+                    <strong>Attention !</strong> <%= error %>
+                </div>
+                <% } %>
+                <form action="/complete" method="post" id="all" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="sexe">Je suis</label>
+                        <select class="form-control" name="sexe" id="sexe">
+                            <option value="Homme">Homme</option>
+                            <option value="Femme">Femme</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pref">Je cherche</label>
+                        <select class="form-control" name="pref" id="pref">
+                            <option value="Femme">Femme</option>
+                            <option value="Homme">Homme</option>
+                            <option value="Homme ou femme">Homme ou femme</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="d">Date de naissance</label>
+                        <select class="form-control" name="d" id="d">
+                            <option value="0">Jour</option>
+                        </select>
+                        <select class="form-control" name="m" id="m">
+                            <option value="0">Mois</option>
+                        </select>
+                        <select class="form-control" name="y" id="y">
+                            <option value="0">Année</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Description</label>
+                        <textarea class="form-control" rows="5" name="bio" id="bio"></textarea>
+                    </div>
+                    <label for="tags">Tags <font color="#a9a9a9">(veuillez en choisir 3)</font></label>
+                    <div class="checkbox" id="tags">
+                        <label class="checkbox-inline"><input type="checkbox" value="Artiste" onclick="check(n)"><font color="#FF0040">#</font>Artiste</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Bosseu(r)(se)" onclick="check(n)"><font color="#FF0040">#</font>Bosseu(r)(se)</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Dormeu(r)(se)" onclick="check(n)"><font color="#FF0040">#</font>Dormeu(r)(se)</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Esquimau" onclick="check(n)"><font color="#FF0040">#</font>Esquimau</label>
+                    </div>
+                    <div class="checkbox">
+                        <label class="checkbox-inline"><input type="checkbox" value="Fétârd(e)" onclick="check(n)"><font color="#FF0040">#</font>Fétârd(e)</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Geek(ette)" onclick="check(n)"><font color="#FF0040">#</font>Geek(ette)</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Manouche" onclick="check(n)"><font color="#FF0040">#</font>Manouche</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Musicien(ne)" onclick="check(n)"><font color="#FF0040">#</font>Musicien(ne)</label>
+                    </div>
+                    <div class="checkbox">
+                        <label class="checkbox-inline"><input type="checkbox" value="Ninja" onclick="check(n)"><font color="#FF0040">#</font>Ninja</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Routier(e)" onclick="check(n)"><font color="#FF0040">#</font>Routier(e)</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Sporti(f)(ve)" onclick="check(n)"><font color="#FF0040">#</font>Sporti(f)(ve)</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Voyageu(r)(se)" onclick="check(n)"><font color="#FF0040">#</font>Voyageu(r)(se)</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="img">Photo de profil <font color="#a9a9a9">(png, jpg ou jpeg, 2Mo max)</font></label>
+                        <input type="file" name="img" id="img">
+                    </div>
+                    <label for="map">Localisation</label>
+                    <div id="map" style="height:300px"></div>
+                    <input type="hidden" id="lat" name="lat" value="48.896788">
+                    <input type="hidden" id="lng" name="lng" value="2.318367">
+                    <br/>
+                    <button type="submit" class="btn btn-default">Ok</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript'>
+    var day = 0;
+    var month = 0;
+    var date = new Date();
+    var year = date.getFullYear() - 17;
+    for (var i = 1; i <= 31; i++) {
+        var d = document.createElement('option');
+        d.text = day + i;
+        d.value = day + i;
+
+        document.getElementById('d').options[i] = d;
+    }
+    for (var j = 1; j <= 12; j++) {
+        var m = document.createElement('option');
+        m.text = month + j;
+        m.value = month + j;
+
+        document.getElementById('m').options[j] = m;
+    }
+    for (var k = 1; k <= 80; k++) {
+        var y = document.createElement('option');
+        y.text = year - k;
+        y.value = year - k;
+
+        document.getElementById('y').options[k] = y;
+    }
+
+    var n = 0;
+    function check(n) {
+        var oElement;
+        var oForm = document.getElementById("all");
+        for (var i = 0; i < oForm.elements.length; i++) {
+            oElement = oForm.elements[i];
+            if (oElement.tagName.toLowerCase() == "input") {
+                if (oElement.type.toLowerCase() == "checkbox") {
+                    if (oElement.checked == true) {
+                        if (n == 0) {
+                            oElement.setAttribute("name", "check1");
+                        }
+                        if (n == 1) {
+                            oElement.setAttribute("name", "check2");
+                        }
+                        if (n == 2) {
+                            oElement.setAttribute("name", "check3");
+                        }
+                        console.log(oElement.name);
+                        n++;
+                    }
+                    if (n < 3 && oElement.checked == false) {
+                        oElement.removeAttribute("disabled");
+                        oElement.removeAttribute("name");
+                    }
+                }
+            }
+        }
+        if (n >= 3) {
+            for (var j = 0; j < oForm.elements.length; j++) {
+                oElement = oForm.elements[j];
+                if (oElement.tagName.toLowerCase() == "input") {
+                    if (oElement.type.toLowerCase() == "checkbox") {
+                        if (oElement.checked == false) {
+                            oElement.setAttribute("disabled", "disabled");
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>
+<script>
+    function initMap() {
+        var myLatLng = {lat: 48.896788, lng: 2.318367};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: myLatLng,
+            scrollwheel: false,
+            zoom: 10
+        });
+        var marker = new google.maps.Marker({
+            map: map,
+            draggable: true,
+            position: myLatLng,
+            title: 'Ma position'
+        });
+
+        google.maps.event.addListener(marker, "dragend", function(evenement) {
+            document.getElementById('lat').value = evenement.latLng.lat();
+            document.getElementById('lng').value = evenement.latLng.lng();
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKwHEDGaQG1fEvvnV3E384bAQ-CzpITzQ&callback=initMap" async defer></script>
+<% include includes/footer.ejs %>

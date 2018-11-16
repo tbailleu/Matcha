@@ -1,0 +1,52 @@
+<% include includes/head.ejs %>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="jumbotron back">
+                <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <img id="logo" src="/img/logo.png">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                    data-target="#navbar"
+                                    aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="/">Matcha</a>
+                        </div>
+                        <div id="navbar" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="/log">Connexion</a></li>
+                                <li><a href="/create">Inscription</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <% if (error) { %>
+                <div class="alert alert-warning">
+                    <strong>Attention !</strong> <%= error %>
+                </div>
+                <% } %>
+                <form method="post" action="/reset">
+                    <div class="form-group">
+                        <label for="login">Identifiant</label>
+                        <input class="form-control" name="login" id="login">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Adresse mail</label>
+                        <input type="email" class="form-control" name="email" id="email">
+                    </div>
+                    <center>
+                        <button type="submit" class="btn btn-default">Envoyer</button>
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

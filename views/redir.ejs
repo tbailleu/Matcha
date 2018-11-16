@@ -1,0 +1,27 @@
+<% include includes/head.ejs %>
+<center>
+    <font color="#f5f5f5">
+        <h1>Matcha <img id="errlogo" src="/img/logo.png"/></h1><br/><br/><br/>
+        Redirection...
+    </font>
+</center>
+<script>
+    var socket = io.connect();
+
+    socket.emit('login', '<%= token %>');
+
+    if ('<%= not%>' == "0") {
+        document.cookie = '<%= token %>+0';
+    }
+    else {
+        document.cookie = '<%= token %>+1';
+    }
+
+    function redir() {
+        self.location.href = "/profile"
+    }
+
+    setTimeout(redir, 1000);
+</script>
+</body>
+</html>
