@@ -37,30 +37,30 @@
                 <div class="panel-body">
                     <ul class="chat" id="conv">
                         <% if (conv != "") { %>
-                        <% for (var i = 0; i < conv.length; i++) { %>
-                        <% if (conv[i].from != from) { %>
-                            <li class="left clearfix">
-                                <div class="chat clearfix">
-                                    <div class="header">
-                                        <strong class="primary-font"><%= conv[i].from%></strong>
-                                        <small class="pull-right invisible">-</small>
-                                    </div>
-                                    <p><%= conv[i].msg%></p>
-                                </div>
-                            </li>
-                        <% } %>
-                        <% if (conv[i].from == from) { %>
-                            <li class="right clearfix">
-                                <div class="chat clearfix">
-                                    <div class="header">
-                                        <small class="invisible">-</small>
-                                        <strong class="pull-right primary-font"><%= conv[i].from%></strong>
-                                    </div>
-                                    <p class="pull-right"><%= conv[i].msg%></p>
-                                </div>
-                            </li>
-                        <% } %>
-                        <% } %>
+                            <% for (var i = 0; i < conv.length; i++) { %>
+                                <% if (conv[i].from != from) { %>
+                                    <li class="left clearfix">
+                                        <div class="chat clearfix">
+                                            <div class="header">
+                                                <strong class="primary-font"><%= conv[i].from%></strong>
+                                                <small class="pull-right invisible">-</small>
+                                            </div>
+                                            <p><%= conv[i].msg%></p>
+                                        </div>
+                                    </li>
+                                <% } %>
+                                <% if (conv[i].from == from) { %>
+                                    <li class="right clearfix">
+                                        <div class="chat clearfix">
+                                            <div class="header">
+                                                <small class="invisible">-</small>
+                                                <strong class="pull-right primary-font"><%= conv[i].from%></strong>
+                                            </div>
+                                            <p class="pull-right"><%= conv[i].msg%></p>
+                                        </div>
+                                    </li>
+                                <% } %>
+                            <% } %>
                         <% } %>
                     </ul>
                 </div>
