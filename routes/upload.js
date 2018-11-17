@@ -30,7 +30,7 @@ router.post('/', upload.single('img'), function(req, res) {
                 }
             });
         }
-        fs.rename(req.file.path, "public/uploads/" + req.session.user.login + "_" + req.body.p + ".jpg");
+        fs.renameSync(req.file.path, "public/uploads/" + req.session.user.login + "_" + req.body.p + ".jpg");
         var pict = "uploads/" + req.session.user.login + "_" + req.body.p + ".jpg";
     }
     else if (req.file.mimetype == "image/png") {
@@ -43,11 +43,11 @@ router.post('/', upload.single('img'), function(req, res) {
                 }
             });
         }
-        fs.rename(req.file.path, "public/uploads/" + req.session.user.login + "_" + req.body.p + ".png");
+        fs.renameSync(req.file.path, "public/uploads/" + req.session.user.login + "_" + req.body.p + ".png");
         var pict = "uploads/" + req.session.user.login + "_" + req.body.p + ".png";
     }
     else {
-        fs.unlink(req.file.path);
+        fs.unlinkSync(req.file.path);
         res.render('info_co.ejs', {info: "Mauvais format d'image"});
         return false;
     }
