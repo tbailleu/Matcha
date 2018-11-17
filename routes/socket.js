@@ -59,38 +59,40 @@ module.exports = function (server, connections) {
         socket.on('message', function(data) {
             mongo.connect("mongodb://localhost/matcha", function (error, db) {
                 if (error) throw error;
-
+                
                 db.collection("users").findOne({token: data.token}, function (error, result) {
                     if (error) throw error;
 
-                    var from = result.login;
-                    var message = data.message;
-                    var notif = {
-                        login: data.to,
-                        from: from,
-                        notif: from + " vous a envoyé un message"
-                    };
-                    var msg_db = {
-                        to: data.to,
-                        from: from,
-                        msg: message
-                    };
-                    db.collection("messages").insertOne(msg_db, function (error) {
-                        if (error) throw error;
-                        db.collection("notifications").insertOne(notif, function (error) {
+                    if (result) {
+                        var from = result.login;
+                        var message = data.message;
+                        var notif = {
+                            login: data.to,
+                            from: from,
+                            notif: from + " vous a envoyé un message"
+                        };
+                        var msg_db = {
+                            to: data.to,
+                            from: from,
+                            msg: message
+                        };
+                        db.collection("messages").insertOne(msg_db, function (error) {
                             if (error) throw error;
+                            db.collection("notifications").insertOne(notif, function (error) {
+                                if (error) throw error;
 
-                            for (var i in connections) {
-                                if (connections[i].login === data.to) {
-                                    socket.to(connections[i].socketId).emit('notif_msg', "Vous avez un nouveau message");
-                                    socket.to(connections[i].socketId).emit('put_message', {
-                                        message: message,
-                                        from: from
-                                    });
+                                for (var i in connections) {
+                                    if (connections[i].login === data.to) {
+                                        socket.to(connections[i].socketId).emit('notif_msg', "Vous avez un nouveau message");
+                                        socket.to(connections[i].socketId).emit('put_message', {
+                                            message: message,
+                                            from: from
+                                        });
+                                    }
                                 }
-                            }
+                            });
                         });
-                    });
+                    }
                 });
             });
         });
