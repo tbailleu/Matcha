@@ -24,20 +24,20 @@ router.post('/', upload.single('img'), function(req, res) {
         return false;
     }
     if (req.file.size > 2000000) {
-        fs.unlink(req.file.path);
+        fs.unlinkSync(req.file.path);
         res.render('complete.ejs', {error: "Fichier trop lourd"});
         return false;
     }
     if (req.file.mimetype == "image/jpeg") {
-        fs.rename(req.file.path, "public/uploads/" + req.session.user.login + "_1.jpg");
+        fs.renameSync(req.file.path, "public/uploads/" + req.session.user.login + "_1.jpg");
         var prof_pict = "uploads/" + req.session.user.login + "_1.jpg";
     }
     else if (req.file.mimetype == "image/png") {
-        fs.rename(req.file.path, "public/uploads/" + req.session.user.login + "_1.png");
+        fs.renameSync(req.file.path, "public/uploads/" + req.session.user.login + "_1.png");
         var prof_pict = "uploads/" + req.session.user.login + "_1.png";
     }
     else {
-        fs.unlink(req.file.path);
+        fs.unlinkSync(req.file.path);
         res.render('complete.ejs', {error: "Mauvais format d'image"});
         return false;
     }

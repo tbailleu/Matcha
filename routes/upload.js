@@ -16,7 +16,7 @@ router.post('/', upload.single('img'), function(req, res) {
         return false;
     }
     if (req.file.size > 2000000) {
-        fs.unlink(req.file.path);
+        fs.unlinkSync(req.file.path);
         res.render('info_co.ejs', {info: "Fichier trop lourd"});
         return false;
     }
