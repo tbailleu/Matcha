@@ -43,6 +43,10 @@ router.post('/', function(req, res) {
         res.render('create.ejs', {error: "Le pseudo ne peut contenir que des lettres et des chiffres"});
         return false;
     }
+    if(!req.body.passwd.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,30}$/)) {
+        res.render('create.ejs', {error: "Le password doit contenir des lettres UPPER + LOWER et des chiffres"});
+        return false;
+    }
 
     var nom = req.body.nom;
     var prenom = req.body.prenom;

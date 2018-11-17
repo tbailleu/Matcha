@@ -94,6 +94,9 @@ router.post('/confirm', function(req, res) {
     else if (validator.isLength(pass, {min:8}) == false) {
         res.render('change_pass.ejs', {error: "Le mot de passe est trop court", log: log, key:key});
     }
+    else if(!pass.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,30}$/)) {
+        res.render('change_pass.ejs', {error: "Le password doit contenir des lettres UPPER + LOWER et des chiffres", log: log, key:key});
+    } 
     else if (validator.equals(pass, pass2) == false) {
         res.render('change_pass.ejs', {error: "Les mots de passe ne sont pas identiques", log: log, key:key});
     }
