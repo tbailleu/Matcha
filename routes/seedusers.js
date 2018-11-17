@@ -44,7 +44,9 @@ router.get('/', function(req, res) {
 		by: [],
 	};
 	mongo.connect("mongodb://localhost/matcha", function(error, db) {if (error) throw error;
-		//db.dropCollection("users");
+		/*/
+		db.dropCollection("users");
+		/*/
 		db.collection("users").find({login: log}).toArray(function(error, result) {if (error) throw error;
 			if (!result.length) {
 				db.collection("users").insertOne(newUser, function (error, result) {if (error) throw error;
@@ -53,6 +55,7 @@ router.get('/', function(req, res) {
 //              db.collection("users").update({login: log}, {$set: {active: "1"}}, function(error, result) {if (error) throw err;}); 
 			}
 		});
+		//*/
 	});
 });
 module.exports = router;
