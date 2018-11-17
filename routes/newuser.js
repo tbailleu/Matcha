@@ -65,7 +65,7 @@ router.post('/', function(req, res) {
         active: "0",
         complete: "",
         sexe: "",
-        pref: "",
+        pref: "Homme ou femme",
         date: {day: "", month: "", year: ""},
         bio: "",
         tags: {t1: "", t2: "", t3: ""},
